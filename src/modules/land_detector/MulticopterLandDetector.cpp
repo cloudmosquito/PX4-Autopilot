@@ -89,7 +89,10 @@ void MulticopterLandDetector::_update_topics()
 	vehicle_thrust_setpoint_s vehicle_thrust_setpoint;
 
 	if (_vehicle_thrust_setpoint_sub.update(&vehicle_thrust_setpoint)) {
-		_vehicle_thrust_setpoint_throttle = -vehicle_thrust_setpoint.xyz[2];
+		// Fully actuated vehicles can support weight with lateral or positive body-z thrust.
+		_vehicle_thrust_setpoint_throttle = _param_lndmc_thr_vec.get()
+						    ? Vector3f{vehicle_thrust_setpoint.xyz}.norm()
+						    : -vehicle_thrust_setpoint.xyz[2];
 		_vehicle_thrust_setpoint_last_update = hrt_absolute_time();
 	}
 

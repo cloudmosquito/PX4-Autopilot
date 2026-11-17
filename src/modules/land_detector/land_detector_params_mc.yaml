@@ -43,3 +43,13 @@ parameters:
       unit: m
       min: -1
       decimal: 2
+    LNDMC_THR_VEC:
+      description:
+        short: Use full thrust vector for multicopter land detection
+        long: |-
+          Use the norm of vehicle_thrust_setpoint.xyz instead of its negative body-z
+          component. Enable for fully actuated vehicles that can support their
+          weight with lateral or positive body-z thrust. All three components
+          must use a common normalization scale, consistent with MPC_THR_HOVER.
+      type: boolean
+      default: false

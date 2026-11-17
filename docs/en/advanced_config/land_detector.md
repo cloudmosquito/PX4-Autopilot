@@ -17,6 +17,20 @@ The complete set of relevant landing detector parameters are listed in the param
 Information about how the parameters affect landing can be found below in [Land Detector States](#mc-land-detector-states).
 :::
 
+### Fully Actuated Multicopters
+
+Set `LNDMC_THR_VEC` to `1` for fully actuated multicopters that can support their weight with lateral or positive body-z thrust.
+The land detector then uses the norm of `vehicle_thrust_setpoint.xyz` as its thrust measure.
+The default value `0` uses the negative body-z component for conventional multicopters.
+
+All three vector components must use a common normalization scale, consistent with `MPC_THR_HOVER`.
+A companion computer commanding motors directly must also publish the normalized body-FRD thrust vector.
+Configure the parameter on the ground before arming, using the airframe defaults or the QGroundControl parameter editor.
+
+The vector norm represents net commanded force.
+After ground contact, lateral position-holding forces can keep it above the minimum-thrust threshold even while the vehicle is stationary.
+Companion landing control should account for the force it continues to request during ground contact and landing confirmation.
+
 Other key parameters that you may need to tune in order to improve landing behaviour on particular airframes are:
 
 - [MPC_THR_HOVER](../advanced_config/parameter_reference.md#MPC_THR_HOVER) - the hover throttle of the system (default is 50%).
